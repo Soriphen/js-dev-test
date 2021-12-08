@@ -11,35 +11,9 @@ const corsOptions = {
 };
 
 export const app = express();
-const fetch = require("node-fetch"); // Need node-fetch version 2 in order to use require
-const localJson = require("./data/repos.json");
 
 // Routes. Note these will fail about 25% due to "terrible" middleware.
 app.use("/repos", terrible(), cors(corsOptions), repos);
-app.use(express.urlencoded({ extended: false }));
-
-async function getRepos(req: any, res: any) {
-  try {
-    const response = await fetch(
-      "https://api.github.com/users/silverorange/repos",
-      {
-        method: "GET",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" }
-      }
-    );
-    const json = await response.json();
-    const combinedJson = json.concat(localJson); // Combining the local json with the one fetched from the external API call
-    const newJson = combinedJson.filter((repo: any) => {
-      return !repo.fork;
-    });
-    res.json(newJson);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-app.get("/repos", getRepos);
 
 // error handling middleware should be loaded after the loading the routes
 app.use(
