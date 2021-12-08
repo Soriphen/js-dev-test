@@ -1,9 +1,9 @@
-import { debug as createDebug } from 'debug';
-import { createServer } from 'http';
-import { config } from './config';
-import { app } from './app';
+import { debug as createDebug } from "debug";
+import { createServer } from "http";
+import { config } from "./config";
+import { app } from "./app";
 
-const debug = createDebug('api');
+const debug = createDebug("api");
 
 /**
  * Normalize a port into a number, string, or false.
@@ -15,7 +15,7 @@ const debug = createDebug('api');
 function normalizePort(val: string | number): number | string | boolean {
   let parsedPort: number;
 
-  if (typeof val === 'string') {
+  if (typeof val === "string") {
     parsedPort = Number.parseInt(val, 10);
 
     if (Number.isNaN(parsedPort)) {
@@ -34,12 +34,12 @@ function normalizePort(val: string | number): number | string | boolean {
 }
 
 const port = normalizePort(config.server.port);
-app.set('port', port);
+app.set("port", port);
 
 const server = createServer(app);
 
-process.on('SIGTERM', () => {
-  debug('Performing graceful shutdown of server.');
+process.on("SIGTERM", () => {
+  debug("Performing graceful shutdown of server.");
   server.close();
 });
 
@@ -49,20 +49,20 @@ server.listen(port);
 /**
  * Event listener for HTTP server "error" event.
  */
-server.on('error', (error: NodeJS.ErrnoException) => {
-  if (error.syscall !== 'listen') {
+server.on("error", (error: NodeJS.ErrnoException) => {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
+    case "EACCES":
       debug(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case 'EADDRINUSE':
+    case "EADDRINUSE":
       debug(`${bind} is already in use`);
       process.exit(1);
       break;
@@ -71,11 +71,11 @@ server.on('error', (error: NodeJS.ErrnoException) => {
   }
 });
 
-server.on('listening', () => {
+server.on("listening", () => {
   const addr = server.address();
   if (addr !== null) {
     const bind =
-      typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+      typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
 
     debug(`Listening on ${bind}`);
   }
