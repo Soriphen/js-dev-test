@@ -11,6 +11,7 @@ const corsOptions = {
 
 export const app = express();
 const fetch = require("node-fetch"); // Need node-fetch version 2 in order to use require
+const localJson = require('./data/repos.json');
 
 // Routes
 app.use('/posts', cors(corsOptions), posts);
@@ -24,12 +25,15 @@ async function getRepos(req, res) {
         headers: { 'Content-Type': 'application/json' }
       });
     const json = await response.json();
-    res.json(json)
+    const combinedJson = json.concat(localJson); // Combining the local json with the one fetched from the external API call
+    const newJson = combinedJson.filter((repo) => {
+      return !repo.fork
+    })
+    res.json(newJson)
   }
   catch(err) {
     console.log(err)
-  }
-  
+  } 
 }
 
 app.get("/repos", getRepos)
