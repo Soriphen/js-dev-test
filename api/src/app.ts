@@ -1,6 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
-import { posts } from "./routes/posts";
+import { repos } from "./routes/repos";
+import { terrible } from "./middleware/terrible";
 import { AppError } from "./typings/AppError";
 
 // CORS header configuration
@@ -13,8 +14,8 @@ export const app = express();
 const fetch = require("node-fetch"); // Need node-fetch version 2 in order to use require
 const localJson = require("./data/repos.json");
 
-// Routes
-app.use("/posts", cors(corsOptions), posts);
+// Routes. Note these will fail about 25% due to "terrible" middleware.
+app.use("/repos", terrible(), cors(corsOptions), repos);
 app.use(express.urlencoded({ extended: false }));
 
 async function getRepos(req: any, res: any) {
