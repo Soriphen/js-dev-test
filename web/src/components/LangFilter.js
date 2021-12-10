@@ -1,25 +1,32 @@
-import {
-  LangButtonStyled,
-  LangFilterContainerStyled
-} from "./LangFilterStyles";
+import { LangFilterContainerStyled } from "./LangFilterStyles";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 import React from "react";
 
-const languageList = [
-  "PHP",
-  "TypeScript",
-  "English",
-  "French",
-  "No Language Filter"
-];
+const languageList = ["All", "PHP", "TypeScript", "English", "French"];
 
-export default function LangFilter({ reposRef, repos, setRepos }) {
-  let reposCopy = [...reposRef.current];
+const LanguageDropDown = ({ handleLangClick }) => {
+  return (
+    <>
+      <DropdownButton variant="secondary" id="lang-dropdown" title="Language">
+        {languageList.map((lang, index) => (
+          <Dropdown.Item key={index} onClick={() => handleLangClick(lang)}>
+            {lang}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
+    </>
+  );
+};
 
+export default function LangFilter({ reposRef, setRepos }) {
+  let reposCopy = [...reposRef.current]; // A copy of reposRef.current in order to store a snapshot of a no filtered sorted repos list
+
+  // Filters the repos based on the language that was selected
   const handleLangClick = (lang) => {
-    if (lang === "No Language Filter") {
+    if (lang === "All") {
       setRepos(reposCopy);
     } else {
-      const filteredRepos = reposCopy.filter((repo, index) => {
+      const filteredRepos = reposCopy.filter((repo) => {
         return repo.language === lang;
       });
       setRepos(filteredRepos);
@@ -28,11 +35,7 @@ export default function LangFilter({ reposRef, repos, setRepos }) {
 
   return (
     <LangFilterContainerStyled>
-      {languageList.map((lang, index) => (
-        <LangButtonStyled key={lang} onClick={() => handleLangClick(lang)}>
-          {lang}
-        </LangButtonStyled>
-      ))}
+      <LanguageDropDown handleLangClick={handleLangClick} />
     </LangFilterContainerStyled>
   );
 }
