@@ -120,8 +120,9 @@ const RepoDetail = ({
   to set a custom highlighter for rendering code, however the downside is having to use
   dangerouslySetInnerHTML. So, sanitization is needed for that possible security risk.
   */
+
   const markup = {
-    __html: DOMPurify.santize(marked(readMe, { renderer: renderer }))
+    __html: DOMPurify.sanitize(marked(readMe, { renderer: renderer }))
   };
 
   // A timer used to hide the state change of commitMessage, commitName, commitDate, and readMe
