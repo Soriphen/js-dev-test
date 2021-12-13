@@ -34,3 +34,5 @@ React client.
 - The modal has the text README.md text overshoot if the width is too small, so a solution is necessary, perhaps starting with max-width
 - Cleaning up the code
 - Part of the css design overhaul can be introducing the user's picture, inspired by Github's design (maybe make it Neumorphic based)
+- Change the date for the commitDate in RepoDetail in ReposList.js from ISO date-time string to short date syntax by making it into a Date constructor
+- Add more comments explaining code, for example, explaining the reason for creating and using the showModalBody state in RepoDetail in ReposList.js
